@@ -1,0 +1,79 @@
+# Rjrj <!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hệ Thống Tạo 5 Mã QR Tự Động - Ninja</title>
+    <!-- Tích hợp thư viện tạo mã QR siêu tốc -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #121212; color: #fff; text-align: center; padding: 20px; }
+        .container { max-width: 600px; margin: auto; background: #1e1e1e; padding: 25px; border-radius: 15px; box-shadow: 0 0 20px rgba(0, 255, 102, 0.25); }
+        button { background-color: #00ff66; color: black; border: none; padding: 15px 30px; font-weight: bold; font-size: 16px; border-radius: 8px; cursor: pointer; margin: 15px 0; transition: 0.2s; box-shadow: 0 4px 10px rgba(0,255,102,0.4); }
+        button:hover { background-color: #00cc52; transform: scale(1.02); }
+        .grid-ma { display: grid; grid-template-columns: 1fr; gap: 20px; margin-top: 20px; }
+        .ma-item { background: #2a2a2a; padding: 15px; border-radius: 10px; border: 1px solid #333; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+        .qr-zone { background: white; padding: 10px; border-radius: 5px; margin-bottom: 10px; display: inline-block; }
+        .pin-text { font-family: monospace; font-size: 16px; color: #00ff66; font-weight: bold; margin: 5px 0 0 0; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>NINJA QR GENERATOR</h2>
+    <p style="color: #aaa;">Hệ thống tự động tạo 5 mã khác nhau - Máy khác quét vẫn nhận bình thường</p>
+    
+    <button onclick="generate5Codes()">KÍCH HOẠT TẠO 5 MÃ CẤP TỐC</button>
+
+    <!-- Khu vực hiển thị 5 mã -->
+    <div class="grid-ma" id="qr-container">
+        <!-- Mã sẽ tự động nhảy vào đây khi bấm nút -->
+    </div>
+</div>
+
+<script>
+    function generate5Codes() {
+        const container = document.getElementById('qr-container');
+        container.innerHTML = ''; // Xóa các mã cũ đi để tạo bộ mã mới
+
+        // Vòng lặp chạy đúng 5 lần để tạo ra 5 mã khác nhau
+        for (let i = 1; i <= 5; i++) {
+            // 1. Tạo ngẫu nhiên một mã số định danh (Ví dụ mã siêu thị hoặc mã pin gồm 8 số)
+            let randomCode = "NINJA-" + Math.floor(10000000 + Math.random() * 90000000);
+
+            // 2. Tạo khung chứa cho từng mã
+            let itemDiv = document.createElement('div');
+            itemDiv.className = 'ma-item';
+
+            let qrZone = document.createElement('div');
+            qrZone.className = 'qr-zone';
+            qrZone.id = 'qr-' + i; // Đặt ID riêng cho từng mã QR
+
+            let textDiv = document.createElement('p');
+            textDiv.className = 'pin-text';
+            textDiv.innerText = "Mã thứ " + i + ": " + randomCode;
+
+            // Bỏ các phần tử vào giao diện
+            itemDiv.appendChild(qrZone);
+            itemDiv.appendChild(textDiv);
+            container.appendChild(itemDiv);
+
+            // 3. Tiến hành vẽ mã QR từ chuỗi số ngẫu nhiên vừa tạo
+            new QRCode(document.getElementById('qr-' + i), {
+                text: randomCode,
+                width: 128,
+                height: 128,
+                colorDark : "#000000",
+                colorLight : "#ffffff",
+                correctLevel : QRCode.CorrectLevel.H
+            });
+        }
+    }
+
+    // Tự động chạy luôn lần đầu khi vừa mở trang cho nóng
+    window.onload = generate5Codes;
+</script>
+
+</body>
+      </html>
+  
